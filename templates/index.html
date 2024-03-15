@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Livestream</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function updateInfo() {
+                // Make an AJAX request to the server to get updated information
+                $.get("/info", function(data) {
+                    // Update the content with the received data
+                    $("#hostname").text("Hostname: " + data.hostname);
+                    $("#ip_address").text("IPv4 Address: " + data.ip_address);
+                    $("#datetime").text("Current Date and Time: " + data.datetime);
+                });
+            }
+
+            // Update the information every 5 seconds (adjust as needed)
+            setInterval(updateInfo, 5000);
+        });
+    </script>
+    <style>
+        body {
+            font-size: 20px;
+        }
+        #info-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #hostname, #ip_address, #datetime {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="info-container">
+        <p id="hostname">Hostname: Loading...</p>
+        <p id="ip_address">IPv4 Address: Loading...</p>
+        <p id="datetime">Current Date and Time: Loading...</p>
+    </div>
+
+    <img src="{{ url_for('video_feed') }}" alt="Camera Livestream" style="width:100%;">
+</body>
+</html>
